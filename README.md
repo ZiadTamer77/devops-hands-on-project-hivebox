@@ -52,4 +52,54 @@ Here is a pre-start checklist:
 
 ## Implementation
 
-** ADD YOUR IMPLEMENTATION DOCUMENTATION HERE **
+
+
+### Phase 1 — Preparation
+
+#### Objective
+
+Set up the repository and establish a proper Git workflow using feature branches and pull requests.
+
+---
+
+### Steps Performed
+
+#### 1. Forked the Repository
+
+Forked the original HiveBox repository to my GitHub account to create an independent working copy.
+
+---
+
+#### 2. Cloned the Repository Locally
+
+```bash
+git clone https://github.com/ZiadTamer77/devops-hands-on-project-hivebox.git
+cd devops-hands-on-project-hivebox
+```
+
+---
+
+#### 3. Created a Feature Branch
+
+```bash
+git checkout -b phase-1-preparation
+```
+
+👉 This ensures changes are isolated from the `main` branch.
+
+---
+
+#### 4. Followed Git Workflow Best Practices
+
+* No direct commits to `main`
+* All changes are made via feature branches
+* Changes will be merged through Pull Requests
+
+---
+
+### Outcome
+
+* Local development environment ready
+* Git workflow established
+* Repository prepared for structured development
+
