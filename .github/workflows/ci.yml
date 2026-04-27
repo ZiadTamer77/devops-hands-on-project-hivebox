@@ -1,0 +1,52 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches: [ main, feature/** ,phase-*]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1️⃣ Checkout code
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 2️⃣ Setup Python
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      # 3️⃣ Install dependencies
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+          pip install pytest flake8
+
+      # 4️⃣ Lint Python code
+      - name: Lint code
+        run: flake8 .
+
+      # 5️⃣ Lint Dockerfile (hadolint)
+      - name: Lint Dockerfile
+        uses: hadolint/hadolint-action@v3.1.0
+
+      # 6️⃣ Run unit tests
+      - name: Run tests
+        run: pytest
+
+      # 7️⃣ Build Docker image
+      - name: Build Docker image
+        run: docker build -t version-app .
+
+      # 8️⃣ OpenSSF Scorecard
+      - name: Run OpenSSF Scorecard
+        uses: ossf/scorecard-action@v2.3.1
+        with:
+          results_file: results.sarif
+          results_format: sarif
+          publish_results: false
