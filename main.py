@@ -1,19 +1,6 @@
-"""Module Providing Version Information"""
+from app import create_app
 
-import sys
-from version import VERSION
-
-
-def get_version():
-    """Function returning the version of the application"""
-    return VERSION
-
-
-def print_version():
-    """Function printing the version of the application"""
-    print(get_version())
-
+app = create_app()
 
 if __name__ == "__main__":
-    if "--version" in sys.argv:
-        print_version()
+    app.run(host="0.0.0.0", port=5000)

@@ -189,6 +189,132 @@ docker build -t version-app .
 
 ---
 
+---
+
+## Phase 3 — API Development & Testing
+
+### Objective
+
+Transform the application from a CLI-based tool into a testable HTTP service by exposing the application version through an API endpoint and validating it with automated tests.
+
+---
+
+### Overview
+
+In this phase, the application was extended to provide a REST API using Flask.
+The `/version` endpoint exposes the application version in JSON format, making it suitable for integration with CI/CD pipelines and external systems.
+
+---
+
+### Steps Performed
+
+#### 1. Introduced Flask Application
+
+* Created a Flask application using the application factory pattern
+* Structured the project into layers:
+
+  * `routes/` → HTTP layer
+  * `services/` → business logic
+* Ensured separation of concerns for better testability and maintainability
+
+---
+
+#### 2. Implemented `/version` Endpoint
+
+```http
+GET /version
+```
+
+**Response:**
+
+```json
+{
+  "version": "0.0.1"
+}
+```
+
+* No input parameters required
+* Deterministic response
+* Designed for automation and monitoring use cases
+
+---
+
+#### 3. Refactored Business Logic
+
+* Moved version logic into a service layer:
+
+```python
+def get_version():
+    return VERSION
+```
+
+* Ensured:
+
+  * Reusability across CLI and API
+  * Testability independent of Flask
+
+---
+
+#### 4. Implemented Unit & API Tests
+
+Two levels of testing were introduced:
+
+##### Service-Level Test
+
+```python
+from app.services.version_service import get_version
+
+def test_get_version():
+    assert get_version() == "0.0.1"
+```
+
+---
+
+##### API-Level Test
+
+```python
+def test_version_endpoint(client):
+    response = client.get("/version")
+
+    assert response.status_code == 200
+    assert response.get_json() == {"version": "0.0.1"}
+```
+
+---
+
+### Testing Strategy
+
+* **Unit tests** validate business logic independently
+* **API tests** validate HTTP behavior and integration
+* Designed to run in CI pipelines without requiring a running server
+
+---
+
+### Why This Matters
+
+Exposing application functionality via an API enables:
+
+* Integration with monitoring systems
+* Automated validation in CI/CD pipelines
+* Standardized communication between services
+
+Testing ensures:
+
+* Reliability of deployments
+* Early detection of regressions
+* Confidence in automation workflows
+
+---
+
+### Outcome
+
+* Application evolved from CLI tool → HTTP service
+* `/version` endpoint implemented and tested
+* Codebase structured for scalability and CI integration
+* Foundation prepared for future endpoints (e.g., `/temperature`)
+
+---
+
 ## Author
 
 Zeyad Tamer
