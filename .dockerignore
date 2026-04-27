@@ -1,3 +1,7 @@
 README.md
 .dockerignore
 .git
+.gitignore
+__pycache__
+.pytest_cache
+.venv

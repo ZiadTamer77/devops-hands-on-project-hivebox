@@ -1,32 +1,18 @@
-# ---------- Stage 1: Builder ----------
-FROM python:3.11.15-slim-trixie AS builder
-
-WORKDIR /app
-
-# Copy only required files (better caching)
-COPY main.py version.py ./
-
-# ---------- Stage 2: Runtime ----------
 FROM python:3.11.15-slim-trixie
 
-# Avoid Python cache + ensure logs go to stdout
-ENV PYTHONDONTWRITEBYTECODE=1 \
-    PYTHONUNBUFFERED=1
-
-# Create non-root user
-RUN useradd -m appuser
-
 WORKDIR /app
 
-# Copy from builder (clean image)
-COPY --from=builder /app /app
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
 
-# Change ownership
+COPY . .
+
+ENV PYTHONUNBUFFERED=1
+
+RUN useradd -m appuser
 RUN chown -R appuser:appuser /app
-
-# Switch to non-root
 USER appuser
 
-# ENTRYPOINT + CMD separation
+EXPOSE 5000
+
 ENTRYPOINT ["python", "main.py"]
-CMD ["--version"]
