@@ -1,0 +1,1 @@
+OPENSENSEMAP_BASE_URL = "https://api.opensensemap.org"
